@@ -36,4 +36,35 @@ def calc_lm(uw,vw,uwd,vwd,du,dv):
     
     return lm, lm_d
 
+def disp_stress(u,w):
+    #
+    # Calculates the mean dispersive stresses profile
+    # of a 3D array (x,y,z).
+    # 
+    nz = u.shape[2]
+    umean = np.nanmean(u,axis=(0,1))
+    wmean = np.nanmean(w,axis=(0,1))
 
+    u_t = np.zeros(nz)
+    w_t = np.zeros(nz)
+    
+    for z in range(nz):
+        u_tx = 0
+        w_tx = 0
+        n = 0 
+        for i in range(u.shape[0]):
+            for j in range(u.shape[1]):
+                u_tx =+ (u[i,j,z]-umean[z])
+                w_tx =+ (w[i,j,z]-umean[z])
+                n =+ 1 
+
+        u_t[z] = u_tx/n
+        w_t[z] = w_tx/n
+
+    return u_t*w_t
+
+
+
+
+
+       
